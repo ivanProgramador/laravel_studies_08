@@ -1,3 +1,58 @@
 A funcionaliadade e a mesma do Breeze porém se trata de um sistema unicamente back-end 
-sem views, isso dá a possibilidade de personalizar a parte grafica e apenas fazer a 
-referencia as rotas necessarias a aplicação.  
+sem views,sem rotas.O fortify cria um conjunto de serviçõs de autenticação  dentro do arquivo
+"FortifyServiceProvider.php"
+como nome já diz o arquivo é um provedor de serviços onde ficam os metodos de Boot(inicialização)
+do sistema fortify. 
+
+Aqui na classe de boot eu tenho as funções de administração do usuário  
+
+ public function boot(): void
+    {
+        Fortify::createUsersUsing(CreateNewUser::class);
+        Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
+        Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
+        Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+        Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
+
+        RateLimiter::for('login', function (Request $request) {
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+
+            return Limit::perMinute(5)->by($throttleKey);
+        });
+
+        RateLimiter::for('two-factor', function (Request $request) {
+            return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        });
+    }
+Se for procurar no arquivo de rotas as rotas deles não estão lá, para ver ass rotas é preciso 
+usar o comando   
+
+  php artisan route:list
+
+o comando vai retornar 25 rotas que o fortify disponibiliza, entre essas rotas não a confirmação de email,
+por se tratar de uma funcionalidade opcional, ao ser instalado ele criou um arquivo dentro da pasta de 
+configurações, config/fortify.php onde ele tema as features.
+
+para desativar uma funcionalidade basta comentar ela
+por exemplo a funcionalidade de verificação por email 
+esta desligada   
+
+'features' => [
+        Features::registration(),
+        Features::resetPasswords(),
+        // Features::emailVerification(),
+        Features::updateProfileInformation(),
+        Features::updatePasswords(),
+        Features::twoFactorAuthentication([
+            'confirm' => true,
+            'confirmPassword' => true,
+            // 'window' => 0,
+        ]
+
+se eu ativar ele passa ater 28 rotas porque ele vai precisar acionar as rotas de verificação de email
+para que essa feature funcione  
+
+
+  
+
+

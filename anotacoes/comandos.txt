@@ -3,6 +3,13 @@ fazendo downlod do fortify
 
 instalando o fortify
   php artisan fortify:install
+
+criando as tabelas
+  php artisan migrate 
+
+executando o seeder para criar o usuario padrão 
+  php artisan db:seed --class=DatabaseSeeder
+
      
    
   
