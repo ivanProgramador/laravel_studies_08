@@ -3,6 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    echo'Hello fortify';
+    return view('home');
 })->middleware(['auth']);
 

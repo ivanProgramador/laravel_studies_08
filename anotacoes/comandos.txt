@@ -13,6 +13,10 @@ executando o seeder para criar o usuario padrão
 criando uma view para fazer login
 
   php artisan make:view auth.login
+
+criando um layout principal e a pasta layouts 
+
+  php artisan make:view layouts.main_layout
  
 
      
