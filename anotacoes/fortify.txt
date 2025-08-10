@@ -1,0 +1,3 @@
+A funcionaliadade e a mesma do Breeze porém se trata de um sistema unicamente back-end 
+sem views, isso dá a possibilidade de personalizar a parte grafica e apenas fazer a 
+referencia as rotas necessarias a aplicação.  
