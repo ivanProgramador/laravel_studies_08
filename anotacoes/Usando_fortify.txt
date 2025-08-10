@@ -1,0 +1,65 @@
+Depois que o fortify é instalado para poder usar ele eu preciso criar as minhas views 
+primiero eu criei um pagina simples de login com um formulario posst ue aponta para a 
+rota 'login' 
+
+Para saber as rotas certas eu uso o comando 
+   php artisan route:list
+
+-----------------------------------------------------------------------
+ <form action="{{ route('login')}}" method="post">
+        @csrf
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+        <br>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        <button type="submit">Login</button>
+</form>
+--------------------------------------------------------------------------
+
+Embora as rotas  existam não e dessa forma que o fortify funciona, para eu possa começar
+usar eu tenho configurar no serviceProvider uma função pra chamar essa view 
+
+----------------------------------------------------------------------------------------------
+ public function boot(): void
+    {
+        Fortify::createUsersUsing(CreateNewUser::class);
+        Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
+        Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
+        Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+        Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
+
+        RateLimiter::for('login', function (Request $request) {
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+
+            return Limit::perMinute(5)->by($throttleKey);
+        });
+
+        RateLimiter::for('two-factor', function (Request $request) {
+            return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        });
+
+        //-------------------------------------------------------------------------------
+        //Definindo a rota de login customizada
+        //-------------------------------------------------------------------------------
+        Fortify::loginView(function () {
+            return view('auth.login');  
+        });
+    }
+-------------------------------------------------------------------------------------------
+depois de fazer isso eu crio uma regra que so liberar o acesso para minha rota principal, 
+se o usuarios estiver logado pára isso  a minha rota está condicionada ao middleware auth 
+
+Route::get('/', function () {
+    echo'Hello fortify';
+})->middleware(['auth']);
+-------------------------------------------------------------------------------------------
+
+
+
+
+

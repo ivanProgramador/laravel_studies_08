@@ -10,6 +10,11 @@ criando as tabelas
 executando o seeder para criar o usuario padrão 
   php artisan db:seed --class=DatabaseSeeder
 
+criando uma view para fazer login
+
+  php artisan make:view auth.login
+ 
+
      
    
   
