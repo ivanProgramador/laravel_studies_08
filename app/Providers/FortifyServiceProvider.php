@@ -51,5 +51,15 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::loginView(function () {
             return view('auth.login');  
         });
+
+         //-------------------------------------------------------------------------------
+        //Definindo a rota de registro customizada
+        //-------------------------------------------------------------------------------
+        Fortify::registerView(function () {
+            return view('auth.register');  
+        });
+
+
+
     }
 }

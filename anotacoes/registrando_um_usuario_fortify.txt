@@ -1,0 +1,38 @@
+O fortify como todo o sistema de autenticação tem uma rota para registrar seus usuários,
+a rota dele tem o nome "register" só que o fortify espera campos com nome padrão, como 
+eu estou usando um framework eu preciso usar esse nomes padrão porque se um deles estiver 
+diferente o registro vai falhar.   
+
+1 - name
+2 - mail
+3 - password
+4 - password_confirmation
+
+A tela de registro pussui uma rota chamada register também, mas embora a assinatura seja a 
+mesma elas tem funções diferentes, o sistema vai saber oque eu quero fazer com base na requisição
+que eu mandar.
+
+por exemplo se eu quero registrar um usuario ele vai receber um post do meu formulário ei ele vai 
+ler as informações que eu vou mandar e registra o usuario, mas ele registra porque eu mandei um post.
+
+register -> POST ele cadastra um usuario 
+
+Agora se eu faço so um link e clico nele ele vai receber um get então ele sabe que eu so quero pegar 
+uma informação
+
+register -> GET  me leva para a pagina de registro 
+
+Depois da construção da view de registros é necessário avisar ao fortify da existencia dessa view isso é feito 
+dentro do "FortifyServiceProvider.php" ele fica dentro da pasta "app/providers" o metodo abaixo deve ficar dentro 
+da função de boot.
+
+   //-------------------------------------------------------------------------------
+   //Definindo a rota de registro customizada
+  //-------------------------------------------------------------------------------
+       Fortify::registerView(function () {
+           return view('auth.register');  
+       });
+
+
+
+
