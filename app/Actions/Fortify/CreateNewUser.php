@@ -28,8 +28,24 @@ class CreateNewUser implements CreatesNewUsers
                 'max:255',
                 Rule::unique(User::class),
             ],
-            'password' => $this->passwordRules(),
-        ])->validate();
+            'password' =>['required','string','min:6','confirmed'],
+        ],
+        // mensagens de erro personalizadas
+        [
+            'name.required' => 'O campo nome é obrigatório.',
+            'name.string' => 'O campo nome deve ser uma string.',
+            'name.max' => 'O campo nome não deve exceder 255 caracteres.',
+            'email.required' => 'O campo email é obrigatório.',
+            'email.string' => 'O campo email deve ser uma string.',
+            'email.email' => 'O campo email deve ser um endereço de email válido.',
+            'email.max' => 'O campo email não deve exceder 255 caracteres.',
+            'email.unique' => 'Este endereço de email já está em uso.',
+            'password.required' => 'O campo senha é obrigatório.',
+            'password.string' => 'O campo senha deve ser uma string.',
+            'password.min' => 'O campo senha deve ter no mínimo 6 caracteres.',
+            'password.confirmed' => 'A confirmação da senha não corresponde.',
+
+    ])->validate();
 
         return User::create([
             'name' => $input['name'],

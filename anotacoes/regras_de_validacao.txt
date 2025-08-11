@@ -1,0 +1,80 @@
+As regras de validação são definidas dentro do arquivo "actions/fortify/CreateNewUser.php"
+nesse arquivo existe a função de criação de usuario e antes de criar ela faz essa validação.
+aqui eu posso inserir mais regras se eu quiser 
+
+ public function create(array $input): User
+    {
+        Validator::make($input, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique(User::class),
+            ],
+            'password' => $this->passwordRules(),
+        ])->validate();
+
+        return User::create([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'password' => Hash::make($input['password']),
+        ]);
+    }
+
+
+digamos que eu quero a senha com as minhas regras de validação  
+eu pego essa parte do codigo e faço a remoção da função padrão dele
+para colocar um array que tem as minhas regras.   
+
+
+'password' => $this->passwordRules()
+
+aplicando minhas regras
+
+'password' =>['required','string','min:6','confirmed']
+
+caso eu tenha duvida de como definir validações da forma certa 
+
+
+https://laravel.com/docs/12.x/validation
+
+por padrão as menagsn de erro do fortify são em inglés mas tamb´m é possivel definir as  minhas 
+mensagens personalizadas basta criar mais um array  contendo uma mensgam pra cada regra 
+
+Validator::make($input, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique(User::class),
+            ],
+            'password' =>['required','string','min:6','confirmed'],
+        ],
+        // mensagens de erro personalizadas
+        [
+            'name.required' => 'O campo nome é obrigatório.',
+            'name.string' => 'O campo nome deve ser uma string.',
+            'name.max' => 'O campo nome não deve exceder 255 caracteres.',
+            'email.required' => 'O campo email é obrigatório.',
+            'email.string' => 'O campo email deve ser uma string.',
+            'email.email' => 'O campo email deve ser um endereço de email válido.',
+            'email.max' => 'O campo email não deve exceder 255 caracteres.',
+            'email.unique' => 'Este endereço de email já está em uso.',
+            'password.required' => 'O campo senha é obrigatório.',
+            'password.string' => 'O campo senha deve ser uma string.',
+            'password.min' => 'O campo senha deve ter no mínimo 6 caracteres.',
+            'password.confirmed' => 'A confirmação da senha não corresponde.',
+
+    ])->validate();
+
+
+
+ 
+
+
+
+
