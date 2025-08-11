@@ -59,6 +59,17 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.register');  
         });
 
+         //-------------------------------------------------------------------------------
+        //Definindo a rota de recuparção de senha customizada
+        //-------------------------------------------------------------------------------
+        Fortify::requestPasswordResetLinkView(function () {
+            return view('auth.forgot-password');  
+        });
+
+         //-------------------------------------------------------------------------------
+
+
+
 
 
     }

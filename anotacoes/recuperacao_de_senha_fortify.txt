@@ -1,0 +1,45 @@
+No caso a sequencioa sempre começa no 'FortifyServiceProvider.php' onde eu vou definir  
+a minha função alternativa pra chamar a função que recupera a senha, nunca esquecer de 
+verificar se essa funclção esta dentro da função boot. 
+
+        //-------------------------------------------------------------------------------
+        //Definindo a rota de recuparção de senha customizada
+        //-------------------------------------------------------------------------------
+        Fortify::requestPasswordResetLinkView(function () {
+            return view('auth.forgot-password');  
+        });
+
+--------------------------------------------------------------------------------------------------
+Estou apontando para a pasta auth criando a aview que eu estou referenciando na função 
+
+   php artisan make:view auth.forgot-password
+
+Depois de criar a view   eu aponto o formulario para a rota criada como esssa rota 
+requer apenas o emial esse formlario so tem um campo de envio 
+
+
+----------------------------------------------------------------------------------
+
+  <form action="{{ route('password.email') }}" method="post">
+                    @csrf
+                    <p class="display-6 text-center">Recuperar a senha</p>
+
+
+                    <div class="mb-3">
+                        <label for="email">Informe o seu email:</label>
+                        <input type="email" name="email" id="email" class="form-control">
+                    </div>
+                    
+
+                    <div class="mt-4 d-flex justify-content-between">
+                        <div>
+                            <a href="{{ route('login') }}">Já sei a minha senha </a>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-secondary px-5">Recuperar senha</button>
+                        </div>
+                    </div>
+                </form>
+-------------------------------------------------------------------------------------------
+ainda não existe uma função para capturar o evcento de envio do emial e dizer ao usuario se isso foi feito
+ 
