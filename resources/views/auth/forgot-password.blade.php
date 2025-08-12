@@ -24,6 +24,17 @@
                         </div>
                     </div>
                 </form>
+                 {{----avaiso de que o email foi enviado para o cliente, ----}}
+
+                 @if (session('status'))
+                     <div class="alert alert-success mt-4">
+                          <p>{{ session('status') }}</p>
+                          <p>Se o email estiver cadastrado, um link de recuperação foi enviado para o seu email.</p>
+                          <a href="{{ route('login') }}" class="btn btn-primary px-5">Voltar</a>
+                    </div>
+                @endif                  
+
+
                  {{---------se der algum erro na hora de criar um usuario ele vai mostrar aqui embaixo ---------}}
 
                 @if ($errors->any())

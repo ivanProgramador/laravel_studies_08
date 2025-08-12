@@ -41,5 +41,48 @@ requer apenas o emial esse formlario so tem um campo de envio
                     </div>
                 </form>
 -------------------------------------------------------------------------------------------
-ainda não existe uma função para capturar o evcento de envio do emial e dizer ao usuario se isso foi feito
+Em uma situação real seria enviado ao cliente um link, que cliente pode acessar apartir do email dele, 
+clicado nesse link ele tteria acesso a aum pagina onde elee pode ataualizar a senha dele, como eu não configurei um  
+cliente de email, esse link sera enviado para o laravel log 
+
+Agora a rota que chega no email tem um link para um formulario onde o usuario pode inserir uma nova senha mas é preciso ter 
+atenção, porque esse formulario tem que enviar um token junto com os dados para a rota de autenticação senão ele não vai alterar 
+a senha.
+
+atenção com a rota de ação do formulario e com o token 
+------------------------------------------------------------------------------------------------------------------
+  <form action="{{ route('password.update') }}" method="post">
+                    @csrf
+                    <p class="display-6 text-center">Redefinir senha</p>
+
+                    //Campo escondido do token     
+                    <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                   
+                    <div class="mb-3">
+                        <label for="email">Usuário</label>
+                        <input type="mail" name="email" id="email" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password">Senha</label>
+                        <input type="password" name="password" id="password" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password_confirmation">Confirmação da senha</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-between">
+                        <div>
+                            <a href="{{ route('login') }}">Página inicial</a>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-secondary px-5">Definir senha</button>
+                        </div>
+                    </div>
+                </form>
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+
  
